@@ -1,44 +1,31 @@
 #include<iostream>
 using namespace std;
-int Func[100][100];
-int i[100][100];
-int y;
-int n;
-int Value[100];
-int Weight[100];
+int n=4;
+int V[100]={0,12,11,9,8};
+int W[100]={0,8,6,4,3};
+int B=13;
+int F[1000][1000]={0};
 int main(){
-    n=4;
-    y=12;
-    Value[1]=1;Value[2]=4;Value[3]=6;Value[4]=8;
-    Weight[1]=1;Weight[2]=2;Weight[3]=4;Weight[4]=6;
-    for(int a=0;a<=y;a++){
-        Func[1][a]=(a/Value[1])*Weight[1];
-        //i[1][a]=a/Value[1];
-        i[1][a]=1;
-    }
-    for(int k=2;k<=n;k++){
-        for(int a=1;a<=y;a++){
-            Func[k][a]=Func[k-1][a];
-            i[k][a]=i[k-1][a];
-            if(a>=Value[k]){
-                int Num_of_K =a/Value[k];
-                int Weight_of_K=Num_of_K*Weight[k];
-                if((Weight_of_K+Func[k-1][a-Num_of_K*Value[k]])<=Func[k-1][a]){
-                    Func[k][a]=Weight_of_K+Func[k-1][a-Num_of_K*Value[k]];
-                    i[k][a]=k;
-                }
-            }
+    for(int i=1;i<=B;i++){
+        //F[1][i]=(i/W[1])*V[1];
+        F[1][i]=0;
+        if(i>=W[1]){
+            F[1][i]=V[1];
         }
     }
-    for(int a=1;a<=n;a++){
-        for(int b=1;b<=y;b++){ 
-            cout<<Func[a][b]<<' ';
-        }cout<<endl;
+    for(int k=2;k<=n;k++){
+        for(int y=1;y<=B;y++){
+            int Det=F[k-1][y];
+            if(y>=W[k]){
+                Det=max(F[k-1][y],
+                V[k]+F[k-1][y-W[k]]);
+            }
+            F[k][y]=Det;
+        }
     }
-    cout<<endl;
-    for(int a=1;a<=n;a++){
-        for(int b=1;b<=y;b++){
-            cout<<i[a][b]<<' ';
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=B;j++){
+            cout<<F[i][j]<<' ';
         }cout<<endl;
     }
 }
